@@ -5,7 +5,7 @@
 
 3) Layers for a CNN are prepared, but need to wait on the reading issue to be resolved.
 
-# ------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------
 
 # labasi-lab
 a repo to explore data from the labasi-project
