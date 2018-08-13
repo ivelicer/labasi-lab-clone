@@ -1,9 +1,9 @@
-# progress update Fri 10 Aug 2018
+# progress update Mon 13 Aug 2018
 1) Have figured out how to use git operations from laptop, but the cfdb_django folder from which I work is stored in my usb because my laptop cannot store all the data. I have been trying to find a way to be able to push from the usb, but this is still in progress...
 
-2) Writing images and labels as a tfRecordFile appears to function. Reading from the tfRecordFile results in empty tensors, however. I have focused on trying to fix this today, but without success. I will stop by on Monday to discuss.
+2) Writing images and labels as a tfRecordFile appears to function. Reading from the tfRecordFile results in empty tensors, however. I have focused on trying to fix this today, but without success. I will stop by on Monday to discuss. (FIXED: Mon 13 Aug 2018)
 
-3) Layers for a CNN are prepared, but need to wait on the reading issue to be resolved.
+3) Debugging CNN Layers, and working on prediction calculations.
 
 # --------------------------------------------------------------------------------------
 
