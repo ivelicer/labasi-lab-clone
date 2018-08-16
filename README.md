@@ -1,7 +1,7 @@
-# progress update Tue 14 Aug 2018
+# progress update Thu 16 Aug 2018
 1) Have figured out how to use git operations from laptop, but the cfdb_django folder from which I work is stored in my usb because my laptop cannot store all the data. I have been trying to find a way to be able to push from the usb, but this is still in progress...
 
-2) Training underway.
+2) Coding for training and prediction finished. Training still underway.
 
 # --------------------------------------------------------------------------------------
 
