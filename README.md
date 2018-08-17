@@ -55,7 +55,34 @@ Example of preparing the files to include integer ids that can later be converte
 
     print("Thresholding finished.")
 
-## 
+## Preparing Shuffled Testing, Validation, and Training Batches
+
+    batch_file_names = ['/Volumes/imvDrive/cfdb-django/media/train_batch.csv', 
+                        '/Volumes/imvDrive/cfdb-django/media/validation_batch.csv', 
+                        '/Volumes/imvDrive/cfdb-django/media/testing_batch.csv']
+
+    # write finished train, validate, and test groups to csv files
+    train_list.to_csv(batch_file_names[0])
+    val_list.to_csv(batch_file_names[1])
+    test_list.to_csv(batch_file_names[2])
+    print("")
+    print("No of sign groups: "+str(group_count))
+    print("")
+
+    # shuffle the train, validate, and test groups
+    print("Shuffling...")
+    for i in range(len(batch_file_names)):
+        f = open(batch_file_names[i], "r")
+        lines = f.readlines()
+        l = lines[1:]
+        f.close() 
+        random.shuffle(l)
+
+        f = open(batch_file_names[i], "w")  
+        f.write(',sign,glyph,onehot\n')
+        f.writelines(l)
+        f.close()
+    print("Shuffling finished.")
 
 # --------------------------------------------------------------------------------------
 
