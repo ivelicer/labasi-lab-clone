@@ -98,7 +98,6 @@ Example of preparing the files to include integer ids that can later be converte
 
     saver = tf.train.Saver()
 
-
     print("PROCESSING "+str(train_batch_num)+" training epochs...")
     for b in range(train_batch_num):
 
@@ -122,6 +121,8 @@ Example of preparing the files to include integer ids that can later be converte
 
     saver = tf.train.import_meta_graph('/Volumes/imvDrive/cfdb-django/labasi_cnn.meta')
     saver.restore(sess, tf.train.latest_checkpoint('./'))
+    
+    # For nesting structure & show_progress() format see tensorflow tutorial at: https://cv-tricks.com/tensorflow-tutorial/training-convolutional-neural-network-for-image-classification/
 
 # --------------------------------------------------------------------------------------
 
