@@ -84,6 +84,45 @@ Example of preparing the files to include integer ids that can later be converte
         f.close()
     print("Shuffling finished.")
 
+## Nesting Training and Validation
+
+    ## ------------------------------
+    ## TRAINING
+    ## ------------------------------
+    f_train, l_train = train_input_fn()
+    f_val, l_val = val_input_fn()
+    batch_counter = 0
+    epoch_counter = 0
+    epochs = int(train_num_examples/(val_num_examples/batch_size))
+    train_batch_num = int(train_num_examples/batch_size)
+
+    saver = tf.train.Saver()
+
+
+    print("PROCESSING "+str(train_batch_num)+" training epochs...")
+    for b in range(train_batch_num):
+
+            x_train_batch, label_train_batch = sess.run([f_train['image'], l_train])
+            one_hot_train = tf.one_hot(label_train_batch, depth=group_count+1)
+            fd_train = {x: x_train_batch, y_true: one_hot_train.eval(session=sess)}
+            sess.run(optimizer, feed_dict=fd_train)
+            batch_counter = batch_counter+1
+
+            if batch_counter % epochs == 0: 
+                ## ------------------------------
+                ## VALIDATING
+                ## ------------------------------
+                x_valid_batch, label_valid_batch = sess.run([f_val['image'], l_val]) 
+                one_hot_valid = tf.one_hot(label_valid_batch, depth=group_count+1)
+                fd_val ={x: x_valid_batch, y_true: one_hot_valid.eval(session=sess)}
+                val_loss = sess.run(cost, feed_dict=fd_val) 
+                show_progress(epoch_counter, fd_train, fd_val, val_loss)
+                epoch_counter = epoch_counter+1
+                saver.save(sess, '/Volumes/imvDrive/cfdb-django/labasi_cnn')
+
+    saver = tf.train.import_meta_graph('/Volumes/imvDrive/cfdb-django/labasi_cnn.meta')
+    saver.restore(sess, tf.train.latest_checkpoint('./'))
+
 # --------------------------------------------------------------------------------------
 
 # labasi-lab
