@@ -17,22 +17,32 @@ from PIL import Image
 from pathlib import Path
 from random import shuffle
 
-'''
-# Labasi CNN Work Flow
-
-The purpose of this project was to prepare code for training a CNN for recognizing glyphs from the labasi database as their respective signs. Due to time constraints, thorough training was not possible, but a workflow with snippets of code is provided below. Of particular note for those interested is the section on writing and reading tfrecord files (formatting one's own image files for use in tensorflow) and preparing one-hots for the image files.
-
-## File Preparation
-
-Because there are cases of signs with very few instances of glyphs, a threshold of glyphs-per-sign should be used to prepare the files. In this case, 50 was used. Each sign group is assigned an integer within the range of total groups that qualify over the threshold. This integer is later used as an id and turned into a one-hot for training.
-'''
 
 # In[2]:
 
 
+'''
+ACDH LBASI CNN
+17 Aug 2018
+
+# Labasi CNN Work Flow
+
+The purpose of this project was to prepare code for training a CNN for recognizing glyphs from the 
+labasi database as their respective signs. Due to time constraints, thorough training was not possible, 
+but a workflow with snippets of code is provided below. Of particular note for those interested is 
+the section on writing and reading tfrecord files (formatting one's own image files for use in tensorflow) 
+and preparing one-hots for the image files.
+
+## File Preparation
+
+Because there are cases of signs with very few instances of glyphs, a threshold of glyphs-per-sign should be
+used to prepare the files. In this case, 50 was used. Each sign group is assigned an integer within the 
+range of total groups that qualify over the threshold. This integer is later used as an id and turned into a 
+one-hot for training.
+'''
 df1 = pd.read_csv('/Volumes/IMVDrive/cfdb-django/glyphs-aligned-w-std_sign-images.csv', usecols=['sign', 'glyph'])
 df_group = df1.groupby(by=['sign'])
-df_group = sorted(df_group, key=lambda x: len(x[1])) # sorting source: https://stackoverflow.com/questions/22291395/sorting-the-grouped-data-as-per-group-size-in-pandas
+df_group = sorted(df_group, key=lambda x: len(x[1])) #https://stackoverflow.com/questions/22291395/sorting-the-grouped-data-as-per-group-size-in-pandas
 
 train_list = pd.DataFrame(data=None, columns=['sign', 'glyph','onehot'])
 val_list = pd.DataFrame(data=None, columns=['sign', 'glyph','onehot'])
@@ -85,7 +95,6 @@ batch_file_names = ['/Volumes/imvDrive/cfdb-django/media/train_batch.csv',
 train_list.to_csv(batch_file_names[0])
 val_list.to_csv(batch_file_names[1])
 test_list.to_csv(batch_file_names[2])
-
 print("")
 print("No of sign groups: "+str(group_count))
 print("")
@@ -131,7 +140,7 @@ def _bytes_feature(value):
 def createDataRecord(outFileName, addrs, labels):
     print("")
     print('Creating '+outFileName+'...')
-
+    
     #open a writer
     writer = tf.python_io.TFRecordWriter(outFileName)
     for i in range(len(addrs)):
@@ -141,12 +150,13 @@ def createDataRecord(outFileName, addrs, labels):
             sys.stdout.flush() 
         # with the image name from the provided address list, load the image from its directory
         filename = os.fsdecode('/Volumes/imvDrive/cfdb-django/media/glyph_img/'+addrs.iloc[i][0])
-        
         if Path(filename).is_file():
             try:
-                '''
-                Artifical aplification of the dataset should occur here. Due to time constraints further amplification was not finished, but worthwhile amplification would include different hues, degrees of noise, and image sharpness.
-                '''
+                
+                
+                # Artifical aplification of the dataset should occur here. Due to time constraints
+                # ...further amplification was not finished, but worthwhile amplification would include different
+                # ...hues, degrees of noise, and image sharpness.
 
                 # convert to gray scale
                 img = Image.open(filename).convert('L') 
@@ -161,7 +171,10 @@ def createDataRecord(outFileName, addrs, labels):
                 example = tf.train.Example(features=tf.train.Features(feature=feature_img))
                 writer.write(example.SerializeToString())
             
-            # A small number of images were corrupted and given the infrequency of corruption it is possible to skip instances   
+            
+            # A small number of images were corrupted and given the 
+            # ...infrequency of corruption it is possible to skip instances 
+            
             except Exception:
                 print("Corrupted record...")
                 pass
@@ -192,11 +205,11 @@ label_ids_df.to_csv('label_ids.csv')
 print("DONE")
 
 
-# In[4]:
+# In[ ]:
 
 
 ## ------------------------------
-## READ INPUT: 
+## READ INPUT: version 1
 ## --source: 
 ## Daniel Persson,'How to load a custom dataset with tf.data [Tensorflow]',
 ## https://www.youtube.com/watch?v=bqeUmLCgsVw
@@ -362,6 +375,7 @@ train_batch_num = int(train_num_examples/batch_size)
 
 saver = tf.train.Saver()
 
+
 print("PROCESSING "+str(train_batch_num)+" training epochs...")
 for b in range(train_batch_num):
 
@@ -387,12 +401,12 @@ for b in range(train_batch_num):
 saver = tf.train.import_meta_graph('/Volumes/imvDrive/cfdb-django/labasi_cnn.meta')
 saver.restore(sess, tf.train.latest_checkpoint('./'))
 
-test_counter = 0
-f_test, l_test = test_input_fn()
-
 ## ------------------------------
 ## TESTING
 ## ------------------------------
+test_counter = 0
+f_test, l_test = test_input_fn()
+
 while f_test != None or l_test != None:
     try:
         x_test_batch, label_test_batch = sess.run([f_test['image'], l_test])
