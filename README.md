@@ -1,6 +1,6 @@
 # Labasi CNN Work Flow
 
-The purpose of this project was to prepare code for training a CNN for recognizing glyphs from the  labasi database as their respective signs. Due to time constraints, thorough training was not possible,  but a workflow with snippets of code is provided below. Of particular note for those interested is the section on writing and reading tfrecord files (formatting one's own image files for use in tensorflow) and preparing one-hots for the image files, of which I include snippets below. To view the code in full please see labasi_cnn_WORKING.ipynb for the final code with comments provided.
+The purpose of this project was to prepare code for training a CNN for recognizing glyphs from the  labasi database as their respective signs. Due to time constraints, thorough training and artificial amplification of the glyph images was not possible,  but a working framework and comments for the workflow can be found at labasi_cnn_WORKING.ipynb. Of particular note for those interested, is the section on writing and reading tfrecord files (formatting one's own image files for use in tensorflow) and preparing ids for the image files that can be turned into one-hots. I include snippets regarding the latter below. 
 
 ## File Preparation
 
